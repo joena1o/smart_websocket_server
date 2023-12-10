@@ -14,7 +14,6 @@ const espClient = [];
 
 let access = 0;
 
-
 app.post('/',(req, res)=>{
   const {username, password} = req.body;
   if(username == "Hyefur" && password == "password"){
@@ -87,7 +86,6 @@ app.ws('/flutter', (ws) => {
     }
 
   });
-
 
   ws.on('close', () => {
     console.log('Flutter app disconnected'); 
