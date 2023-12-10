@@ -29,6 +29,21 @@ app.post('/',(req, res)=>{
   }
 });
 
+app.get('/esp',(req, res)=>{
+  // const {username, password} = req.body;
+  // if(username == "Hyefur" && password == "password"){
+  //   access = 1;
+  //   res.status(200).json({
+  //     message: 'Access Granted',
+  //   });
+  // }else{
+    access = 0;
+    res.status(200).json({
+      message: 'Access Denied',
+    });
+  //}
+});
+
 
 app.get('/logout',(req, res)=>{
     access = 0;
