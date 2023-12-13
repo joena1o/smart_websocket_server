@@ -56,6 +56,10 @@ app.get('/logout',(req, res)=>{
 app.ws('/esp', (ws) => {
 console.log('ESP32 connected');
 espClient.push(ws);
+
+espClient.forEach((espSocket) => {
+  espSocket.send(`Connected`)
+    });
                
 ws.on('message', (message) => {
  console.log(`Received from ESP32: ${message}`);
