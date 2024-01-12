@@ -83,14 +83,16 @@ async function PushNotification(message){
 
 
 app.ws('/flutter', async(ws) => {
+  
   console.log('Flutter app connected');
 
-  PushNotification("Connection Established");
+  
 
   wsClients.push(ws);
 
   wsClients.forEach((flutterSocket) => {
     flutterSocket.send(`Connected`)
+    PushNotification("Connection Established");
   });
         
 
