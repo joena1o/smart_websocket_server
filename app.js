@@ -45,47 +45,54 @@ app.ws('/esp', (ws) => {
 console.log('ESP32 connected');
 espClient.push(ws);
 
-  wsClients.forEach((flutterSocket) => {
-    flutterSocket.send(`Smart Home Connected`)
-  });   
+    wsClients.forEach((flutterSocket) => {
+      flutterSocket.send(`Smart Home Connected`);
+    });   
                
   ws.on('message', (message) => {
     console.log(`Received from ESP32: ${message}`);
-    wsClients.forEach((flutterSocket) => {
-    flutterSocket.send(message);
-     });
+        wsClients.forEach((flutterSocket) => {
+          flutterSocket.send(message);
+        });
    });
 
    ws.on('close', () => {
     console.log('ESP disconnected'); 
     espClient.splice(espClient.indexOf(ws), 1);
-
-    wsClients.forEach((flutterSocket) => {
-      flutterSocket.send(`Smart Home Disconnected`)
-    }); 
-
+        wsClients.forEach((flutterSocket) => {
+          flutterSocket.send(`Smart Home Disconnected`)
+        }); 
   });
+
 
 });
 
-app.ws('/flutter', async(ws) => {
-  console.log('Flutter app connected');
-  wsClients.push(ws);
 
-  wsClients.forEach((flutterSocket) => {
-    flutterSocket.send(`Connected`)
-      });
-
-      const notification = new OneSignal.Notification();
+async function PushNotification(message){
+  const notification = new OneSignal.Notification();
         notification.app_id = ONESIGNAL_APP_ID;
         notification.included_segments = ['Subscribed Users'];
         notification.headings = {
             en: "Smart Home"
           }
         notification.contents = {
-            en: `User connected`
+            en: `$message`
         };
         const {id} = await client.createNotification(notification);
+}
+
+
+app.ws('/flutter', async(ws) => {
+  console.log('Flutter app connected');
+
+  PushNotification("Connection Established");
+
+  wsClients.push(ws);
+
+  wsClients.forEach((flutterSocket) => {
+    flutterSocket.send(`Connected`)
+  });
+        
 
   ws.on('message', (newMessage) => {
 
