@@ -76,9 +76,9 @@ async function PushNotification(message){
             en: "Smart Home"
           }
         notification.contents = {
-            en: `$message`
+            en: message
         };
-        const {id} = await client.createNotification(notification);
+        await client.createNotification(notification);
 }
 
 
